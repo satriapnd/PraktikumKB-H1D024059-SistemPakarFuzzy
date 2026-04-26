@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}Sponsorship Decision | FluenMetrics{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-8 text-center">
+            <h2 class="fw-bold mb-3">Sponsorship Decision (Expert System)</h2>
+            <p class="text-muted">Simulasi saran ahli pemasaran untuk menilai kelayakan kontrak dan valuasi harga menggunakan Forward Chaining Rule-Based System.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Input Form -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm glass-panel h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4 border-bottom pb-2">Variabel Kriteria (Fakta Pakar)</h5>
+                    <form id="expertForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Skor Loyalitas (Dari Fuzzy) <span class="text-danger">*</span></label>
+                            <select class="form-select border-primary bg-primary-soft text-primary fw-bold" id="loyalty_status" name="loyalty_status" required>
+                                <option value="" disabled selected>Pilih Status Loyalitas</option>
+                                <option value="Pasif">Pasif (0-40)</option>
+                                <option value="Aktif">Aktif (40-70)</option>
+                                <option value="Militan">Militan (70-100)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Kategori Konten</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="Edukasi/Teknologi">Edukasi / Teknologi</option>
+                                <option value="Beauty/Fashion">Beauty / Fashion</option>
+                                <option value="Gaming/Hiburan">Gaming / Hiburan</option>
+                                <option value="Lainnya">Lainnya </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tier Subscriber</label>
+                            <select class="form-select" id="subscriber_tier" name="subscriber_tier" required>
+                                <option value="Nano">Nano (< 10.000 Subs)</option>
+                                <option value="Micro" selected>Micro (10.000 - 100.000 Subs)</option>
+                                <option value="Macro">Macro (100.000 - 1.000.000 Subs)</option>
+                                <option value="Mega">Mega (> 1.000.000 Subs)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Riwayat Pelanggaran (Brand Safety)</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="violation_history" id="bersih" value="Bersih" checked>
+                                    <label class="form-check-label text-success" for="bersih"><i class="bi bi-shield-check"></i> Bersih</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="violation_history" id="strike" value="Pernah Strike">
+                                    <label class="form-check-label text-danger" for="strike"><i class="bi bi-shield-x"></i> Pernah Strike</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Demografi Target (Usia)</label>
+                                <select class="form-select" id="age_demo" name="age_demo">
+                                    <option value="13-17">13-17 Tahun</option>
+                                    <option value="18-24" selected>18-24 Tahun</option>
+                                    <option value="25-34">25-34 Tahun</option>
+                                    <option value="35+">35+ Tahun</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-semibold">Frekuensi Upload</label>
+                                <select class="form-select" id="upload_freq" name="upload_freq">
+                                    <option value="Rutin (1-2 per minggu)" selected>Rutin (1-2/minggu)</option>
+                                    <option value="Jarang (<1 per bulan)">Jarang (<1/bulan)</option>
+                                    <option value="Sangat Sering (>3 per minggu)">Sangat Sering</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 rounded-pill py-2 fw-bold" id="btnExpert">
+                            <span class="spinner-border spinner-border-sm d-none" id="expertLoader" role="status" aria-hidden="true"></span>
+                            Proses Penilaian Pakar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Panel -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm result-panel expert-panel h-100 position-relative overflow-hidden">
+                <div class="card-body p-5 d-flex flex-column justify-content-center z-1 text-white">
+                    <h4 class="mb-4 text-center border-bottom pb-3 border-secondary">Keputusan Akhir</h4>
+                    
+                    <div id="expertResultBox" class="w-100 d-none">
+                        <div class="mb-4 p-3 bg-dark bg-opacity-25 rounded-3 border-start border-4 border-warning" id="statusBox">
+                            <p class="text-uppercase small mb-1 opacity-75 fw-bold tracking-wide">Status Kelayakan</p>
+                            <h2 class="fw-bold mb-0" id="finalStatus">Layak</h2>
+                        </div>
+                        
+                        <div class="mb-4 p-3 bg-dark bg-opacity-25 rounded-3">
+                            <p class="text-uppercase small mb-1 opacity-75 fw-bold tracking-wide">Rekomendasi Strategi</p>
+                            <p class="lead mb-0" id="finalRecommendation">Lakukan kontrak uji coba.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-gradient-premium rounded-4 text-center shadow-lg transform-hover">
+                            <p class="text-uppercase small mb-2 opacity-75 fw-bold tracking-wide">Estimasi Nilai Kontrak Ideal</p>
+                            <h1 class="display-4 fw-bold mb-0 text-gradient-gold" id="finalValue">Rp 0</h1>
+                            <p class="small mt-2 mb-0 opacity-75">Perhitungan berbasis bobot kategori, tier, dan bonus loyalitas audiens.</p>
+                        </div>
+                    </div>
+
+                    <div id="expertInitialState" class="text-center opacity-50 py-5">
+                        <i class="bi bi-briefcase" style="font-size: 5rem;"></i>
+                        <p class="mt-3">Masukkan fakta sistem dan klik proses untuk melihat valuasi dan saran.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

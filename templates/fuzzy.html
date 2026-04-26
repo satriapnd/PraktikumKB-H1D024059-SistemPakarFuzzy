@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Engagement Auditor | FluenMetrics{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-8 text-center">
+            <h2 class="fw-bold mb-3">Engagement Auditor</h2>
+            <p class="text-muted">Gunakan form di bawah ini untuk mengolah data statistik analitik menjadi Skor Indeks Loyalitas dengan Logika Fuzzy Mamdani.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Input Form -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm glass-panel h-100">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4 border-bottom pb-2">Variabel Input (Fuzzy)</h5>
+                    <form id="fuzzyForm">
+                        <div class="mb-3">
+                            <label for="lvr" class="form-label d-flex justify-content-between">
+                                <span>Like-to-View Ratio (LVR) <i class="bi bi-info-circle text-muted" title="Mengukur apresiasi positif penonton"></i></span>
+                                <span id="lvrVal" class="text-primary fw-bold">10%</span>
+                            </label>
+                            <input type="range" class="form-range custom-range" id="lvr" name="lvr" min="0" max="25" step="0.1" value="10" oninput="document.getElementById('lvrVal').innerText = this.value + '%'">
+                            <div class="d-flex justify-content-between text-muted small">
+                                <span>Rendah</span><span>Normal</span><span>Tinggi</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-4">
+                            <label for="cvr" class="form-label d-flex justify-content-between">
+                                <span>Comment-to-View Ratio (CVR) <i class="bi bi-info-circle text-muted" title="Mengukur kedalaman interaksi dua arah"></i></span>
+                                <span id="cvrVal" class="text-primary fw-bold">1.0%</span>
+                            </label>
+                            <input type="range" class="form-range custom-range" id="cvr" name="cvr" min="0" max="6" step="0.1" value="1.0" oninput="document.getElementById('cvrVal').innerText = this.value + '%'">
+                            <div class="d-flex justify-content-between text-muted small">
+                                <span>Sepi</span><span>Aktif</span><span>Tinggi</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-4">
+                            <label for="arr" class="form-label d-flex justify-content-between">
+                                <span>Audience Retention Rate (ARR) <i class="bi bi-info-circle text-muted" title="Mengukur tingkat ketertarikan terhadap durasi"></i></span>
+                                <span id="arrVal" class="text-primary fw-bold">45%</span>
+                            </label>
+                            <input type="range" class="form-range custom-range" id="arr" name="arr" min="0" max="100" step="1" value="45" oninput="document.getElementById('arrVal').innerText = this.value + '%'">
+                            <div class="d-flex justify-content-between text-muted small">
+                                <span>Drop</span><span>Stabil</span><span>Lama</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4 mt-4">
+                            <label for="sharing" class="form-label d-flex justify-content-between">
+                                <span>Sharing Rate <i class="bi bi-info-circle text-muted" title="Mengukur potensi viralitas konten"></i></span>
+                                <span id="sharingVal" class="text-primary fw-bold">0.5%</span>
+                            </label>
+                            <input type="range" class="form-range custom-range" id="sharing" name="sharing" min="0" max="5" step="0.05" value="0.5" oninput="document.getElementById('sharingVal').innerText = this.value + '%'">
+                            <div class="d-flex justify-content-between text-muted small">
+                                <span>Rendah</span><span>Sedang</span><span>Tinggi</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold" id="btnFuzzy">
+                            <span class="spinner-border spinner-border-sm d-none" id="fuzzyLoader" role="status" aria-hidden="true"></span>
+                            Hitung Indeks Loyalitas
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Panel -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm result-panel text-white h-100 position-relative overflow-hidden">
+                <div class="card-body p-5 d-flex flex-column justify-content-center align-items-center z-1 text-center">
+                    <h4 class="mb-4 text-light">Hasil Analisis Fuzzy</h4>
+                    
+                    <div id="fuzzyResultBox" class="w-100 d-none">
+                        <div class="score-circle mx-auto mb-4 d-flex justify-content-center align-items-center">
+                            <h1 class="display-3 fw-bold mb-0 text-white" id="loyaltyScore">0</h1>
+                        </div>
+                        <p class="lead mb-2">Status Audiens:</p>
+                        <h2 class="fw-bold mb-4 px-4 py-2 rounded-pill d-inline-block bg-white text-dark" id="loyaltyStatus">Label</h2>
+                        
+                        <p class="text-light-50 small mb-5">Data ini menunjukkan klasifikasi audiens berdasarkan derajat keanggotaan matematis Mamdani.</p>
+                        
+                        <button onclick="proceedToExpert()" class="btn btn-light btn-lg w-100 rounded-pill fw-bold cta-button pulse-animation">
+                            Lanjutkan ke Penilaian Pakar <i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+
+                    <div id="fuzzyInitialState" class="text-center opacity-50 py-5">
+                        <i class="bi bi-cpu" style="font-size: 5rem;"></i>
+                        <p class="mt-3">Masukkan data dan klik hitung untuk melihat hasil.</p>
+                    </div>
+                </div>
+                <!-- Dynamic background graphic based on result (controlled by JS) -->
+                <div class="result-bg" id="resultBg"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Beranda | FluenMetrics{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5 hero-section">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-gradient mb-3">Audit Influencer Berbasis AI</h1>
+            <p class="lead text-muted mb-4">FluenMetrics adalah platform analisis cerdas yang menggabungkan Fuzzy Logic dan Sistem Pakar untuk mengukur loyalitas audiens serta menentukan nilai kontrak sponsorship yang adil dan objektif.</p>
+            <div class="d-flex gap-3">
+                <a href="/fuzzy" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm"><i class="bi bi-play-circle me-2"></i>Mulai Audit</a>
+                <a href="#about" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-4 mt-lg-0 text-center">
+            <!-- Decorative Element instead of an image, to give a modern feel -->
+            <div class="hero-decorative-box glass-panel p-5 mx-auto">
+                <i class="bi bi-bar-chart-line-fill text-primary" style="font-size: 6rem;"></i>
+                <h3 class="mt-3 fw-bold text-gradient">Data-Driven Decisions</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- About & Benefits Section -->
+    <div id="about" class="row mt-5 mb-5 text-center">
+        <div class="col-12 mb-4">
+            <h2 class="fw-bold">Mengapa FluenMetrics?</h2>
+            <p class="text-muted">Menjembatani statistik mentah media sosial dengan keputusan bisnis strategis.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm benefit-card">
+                <div class="card-body p-4">
+                    <div class="icon-box bg-primary-soft text-primary mb-3">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Objektif & Tanpa Bias</h5>
+                    <p class="card-text text-muted">Menghindari bias saat memilih influencer karena didasarkan pada perhitungan matematis Fuzzy Logic.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm benefit-card">
+                <div class="card-body p-4">
+                    <div class="icon-box bg-success-soft text-success mb-3">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Efisiensi Biaya</h5>
+                    <p class="card-text text-muted">Membantu perusahaan menentukan harga kontrak yang adil sehingga anggaran pemasaran lebih efisien.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 border-0 shadow-sm benefit-card">
+                <div class="card-body p-4">
+                    <div class="icon-box bg-danger-soft text-danger mb-3">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Mitigasi Risiko</h5>
+                    <p class="card-text text-muted">Menghindari kerjasama dengan kreator bereputasi buruk atau engagement palsu dengan Sistem Pakar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 glass-panel shadow hover-card h-100 overflow-hidden" style="border-top: 2px solid var(--primary) !important;">
+                <div class="card-body p-5 position-relative z-1">
+                    <h3 class="fw-bold mb-3 text-gradient">Engagement Auditor</h3>
+                    <span class="badge bg-primary mb-3 text-white">Mesin Fuzzy Logic</span>
+                    <p class="text-muted">Ubah statistik abstrak seperti interaksi dan retensi menjadi Indeks Loyalitas Audiens. Ketahui apakah penonton channel tersebut Pasif, Aktif, atau Militan.</p>
+                    <a href="/fuzzy" class="btn btn-outline-secondary mt-3 rounded-pill fw-bold text-white border-white">Buka Auditor <i class="bi bi-arrow-right ms-2"></i></a>
+                </div>
+                <!-- Decorative background elements -->
+                <div class="position-absolute top-0 end-0 opacity-10 p-4 z-0 text-primary">
+                    <i class="bi bi-bezier2" style="font-size: 8rem;"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 glass-panel shadow hover-card h-100 overflow-hidden" style="border-top: 2px solid var(--secondary) !important;">
+                <div class="card-body p-5 position-relative z-1">
+                    <h3 class="fw-bold mb-3 text-gradient">Sponsorship Decision</h3>
+                    <span class="badge bg-primary text-white mb-3">Mesin Sistem Pakar</span>
+                    <p class="text-muted">Dapatkan rekomendasi strategis selayaknya konsultan bisnis. Evaluasi kelayakan kontrak dan dapatkan estimasi harga ideal berdasarkan kriteria kompleks.</p>
+                    <a href="/expert" class="btn btn-outline-secondary mt-3 rounded-pill fw-bold text-white border-white">Buka Expert <i class="bi bi-arrow-right ms-2"></i></a>
+                </div>
+                <!-- Decorative background elements -->
+                <div class="position-absolute top-0 end-0 opacity-10 p-4 z-0 text-secondary">
+                    <i class="bi bi-diagram-3" style="font-size: 8rem;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
